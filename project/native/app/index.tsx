@@ -1,15 +1,10 @@
-import { View, Text } from 'react-native';
+// [Section 1]
+// import HelloWorldPage from '@/components/Section 01/01. helloworld';
 
-const index = () => {
+const IndexPage = () => {
   return (
-    <View>
-      <Text>하이룽가</Text>
-      <Text>하이룽가</Text>
-      <Text>하이룽가</Text>
-      <Text>하이룽가</Text>
-      <Text>하이룽가</Text>
-    </View>
+    // <HelloWorldPage />
   );
 };
 
-export default index;
+export default IndexPage;
