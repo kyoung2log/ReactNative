@@ -5,7 +5,8 @@
 
 // [Section 3]
 // import DebuggingPage from '@/components/04. Debugging';
-import BridgeWebToAppPage from '@/components/05. Bridge Web To App';
+// import BridgeWebToAppPage from '@/components/05. Bridge Web To App';
+import BridgeAppToWebPage from '@/components/06. Bridge App To Web';
 
 const IndexPage = () => {
   return (
@@ -13,7 +14,8 @@ const IndexPage = () => {
     // <ReactNativeTagsPage />
     // <WebviewPage />
     // <DebuggingPage />
-    <BridgeWebToAppPage />
+    // <BridgeWebToAppPage />
+    <BridgeAppToWebPage />
   );
 };
 
