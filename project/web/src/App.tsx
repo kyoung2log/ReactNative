@@ -1,7 +1,37 @@
-// 06. Bridge App To Web
+// 07. Bridge API
 import { useEffect } from 'react';
 
+declare const window: Window & {
+  ReactNativeWebView: {
+    postMessage: (message: string) => void;
+  };
+};
+
 export default function App() {
+  const handleVersion = () => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        query: 'fetchDeviceVersion',
+      })
+    );
+  };
+
+  const handlePlatform = () => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        query: 'fetchDevicePlatform',
+      })
+    );
+  };
+
+  const handleLocation = () => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        query: 'fetchDeviceLocation',
+      })
+    );
+  };
+
   useEffect(() => {
     // 1. 안드로이드에서 수신 대기
     document.addEventListener('message', (message: any) => {
@@ -12,8 +42,34 @@ export default function App() {
       alert(message.data);
     });
   }, []);
-  return <></>;
+  return (
+    <>
+      <br />
+      <br />
+      <br />
+      <button onClick={handleVersion}>버전정보</button>
+      <button onClick={handlePlatform}>기종정보</button>
+      <button onClick={handleLocation}>위치정보</button>
+    </>
+  );
 }
+
+// // 06. Bridge App To Web
+// import { useEffect } from 'react';
+
+// export default function App() {
+//   useEffect(() => {
+//     // 1. 안드로이드에서 수신 대기
+//     document.addEventListener('message', (message: any) => {
+//       alert(message.data);
+//     });
+//     // 2. IOS에서 수신 대기
+//     window.addEventListener('message', (message: any) => {
+//       alert(message.data);
+//     });
+//   }, []);
+//   return <></>;
+// }
 
 // // 05. Bridge Web To App
 // declare const window: Window & {
