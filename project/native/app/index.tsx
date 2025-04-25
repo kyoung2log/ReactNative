@@ -7,7 +7,8 @@
 // import DebuggingPage from '@/components/04. Debugging';
 // import BridgeWebToAppPage from '@/components/05. Bridge Web To App';
 // import BridgeAppToWebPage from '@/components/06. Bridge App To Web';
-import BridgeAPIPage from '@/components/07. Bridge API';
+// import BridgeAPIPage from '@/components/07. Bridge API';
+import BridgePromiseAPIPage from '@/components/08. Bridge Promise API';
 
 const IndexPage = () => {
   return (
@@ -17,7 +18,8 @@ const IndexPage = () => {
     // <DebuggingPage />
     // <BridgeWebToAppPage />
     // <BridgeAppToWebPage />
-    <BridgeAPIPage />
+    // <BridgeAPIPage />
+    <BridgePromiseAPIPage />
   );
 };
 

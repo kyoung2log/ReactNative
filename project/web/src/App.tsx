@@ -1,4 +1,6 @@
-// 07. Bridge API
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// 08. Bridge Promise API
 import { useEffect } from 'react';
 
 declare const window: Window & {
@@ -7,39 +9,68 @@ declare const window: Window & {
   };
 };
 
+const APIs = {};
+
 export default function App() {
-  const handleVersion = () => {
-    window.ReactNativeWebView.postMessage(
-      JSON.stringify({
-        query: 'fetchDeviceVersion',
-      })
-    );
+  const handleVersion = async () => {
+    const result = await new Promise((resolve1) => {
+      APIs.fetchDeviceVersion = resolve1;
+
+      window.ReactNativeWebView.postMessage(JSON.stringify({ query: 'fetchDeviceVersion' }));
+    });
+
+    alert(result.data.fetchDeviceVersion.appVersion);
   };
 
-  const handlePlatform = () => {
-    window.ReactNativeWebView.postMessage(
-      JSON.stringify({
-        query: 'fetchDevicePlatform',
-      })
-    );
+  const handlePlatform = async () => {
+    const result = await new Promise((resolve2) => {
+      APIs.fetchDevicePlatform = resolve2;
+
+      window.ReactNativeWebView.postMessage(JSON.stringify({ query: 'fetchDevicePlatform' }));
+    });
+
+    alert(result.data.fetchDevicePlatform.platform);
   };
 
-  const handleLocation = () => {
-    window.ReactNativeWebView.postMessage(
-      JSON.stringify({
-        query: 'fetchDeviceLocation',
-      })
-    );
+  const handleLocation = async () => {
+    const result = await new Promise((resolve3) => {
+      APIs.fetchDeviceLocation = resolve3;
+
+      window.ReactNativeWebView.postMessage(JSON.stringify({ query: 'fetchDeviceLocation' }));
+    });
+
+    alert(result.data.fetchDeviceLocation.lat);
   };
 
   useEffect(() => {
     // 1. 안드로이드에서 수신 대기
     document.addEventListener('message', (message: any) => {
-      alert(message.data);
+      const response = JSON.parse(message.data);
+      const query = Object.keys(response)[0];
+      const resolve = APIs[query];
+
+      resolve({ data: response });
+      delete APIs[query];
+      // const resolve1 = APIs.fetchDeviceVersion;
+      // const resolve2 = APIs.fetchDevicePlatform;
+      // const resolve3 = APIs.fetchDeviceLocation;
+
+      // resolve1(message.data);
+      // resolve2(message.data);
+      // resolve3(message.data);
+
+      // delete APIs.fetchDeviceVersion;
+      // delete APIs.fetchDevicePlatform;
+      // delete APIs.fetchDeviceLocation;
     });
     // 2. IOS에서 수신 대기
     window.addEventListener('message', (message: any) => {
-      alert(message.data);
+      const response = JSON.parse(message.data);
+      const query = Object.keys(response)[0];
+      const resolve = APIs[query];
+
+      resolve({ data: response });
+      delete APIs[query];
     });
   }, []);
   return (
@@ -54,6 +85,66 @@ export default function App() {
   );
 }
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// // 07. Bridge API
+// import { useEffect } from 'react';
+
+// declare const window: Window & {
+//   ReactNativeWebView: {
+//     postMessage: (message: string) => void;
+//   };
+// };
+
+// export default function App() {
+//   const handleVersion = () => {
+//     window.ReactNativeWebView.postMessage(
+//       JSON.stringify({
+//         query: 'fetchDeviceVersion',
+//       })
+//     );
+//   };
+
+//   const handlePlatform = () => {
+//     window.ReactNativeWebView.postMessage(
+//       JSON.stringify({
+//         query: 'fetchDevicePlatform',
+//       })
+//     );
+//   };
+
+//   const handleLocation = () => {
+//     window.ReactNativeWebView.postMessage(
+//       JSON.stringify({
+//         query: 'fetchDeviceLocation',
+//       })
+//     );
+//   };
+
+//   useEffect(() => {
+//     // 1. 안드로이드에서 수신 대기
+//     document.addEventListener('message', (message: any) => {
+//       alert(message.data);
+//     });
+//     // 2. IOS에서 수신 대기
+//     window.addEventListener('message', (message: any) => {
+//       alert(message.data);
+//     });
+//   }, []);
+//   return (
+//     <>
+//       <br />
+//       <br />
+//       <br />
+//       <button onClick={handleVersion}>버전정보</button>
+//       <button onClick={handlePlatform}>기종정보</button>
+//       <button onClick={handleLocation}>위치정보</button>
+//     </>
+//   );
+// }
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // // 06. Bridge App To Web
 // import { useEffect } from 'react';
 
@@ -71,6 +162,8 @@ export default function App() {
 //   return <></>;
 // }
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // // 05. Bridge Web To App
 // declare const window: Window & {
 //   ReactNativeWebView: {
@@ -93,6 +186,8 @@ export default function App() {
 //   );
 // }
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // // 04. Debugging
 // export default function App() {
 //   const handleClick = () => {
